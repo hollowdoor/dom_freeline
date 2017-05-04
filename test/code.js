@@ -428,20 +428,37 @@ function createTopElements(){
     var p1 = create('p');
     var inputElement = create('input', {placeholder: 'Element Type'});
     var changeElement = create('button');
+    var inputWidth = create('input', {placeholder: 'Element Width'});
+    var changeWidth = create('button');
+    var input1 = create('div');
+    var input2 = create('div');
     var ol = create('ol');
     var p2 = create('p');
 
+    append(input1, inputElement);
+    append(input1, changeElement);
+    append(input2, inputWidth);
+    append(input2, changeWidth);
+
     changeElement.innerHTML = 'Change Element';
+    changeWidth.innerHTML = 'Change Width';
     p1.textContent = 'Try different elements.';
-    p2.textContent = 'Adjust the sliders to change the line.';
-    [p1, inputElement, changeElement, p2, ol]
+    p2.textContent = 'Adjust the sliders to change the line\'s position.';
+    [p1, input1,input2,p2, ol]
     .forEach(function (e){ return append(container, e); });
 
     container.style.margin = '0 25% 0 25%';
     container.style.border = '1px solid black';
     container.style.padding = '7px';
 
-    return {container: container, inputElement: inputElement, changeElement: changeElement, ol: ol};
+    return {
+        container: container,
+        inputElement: inputElement,
+        changeElement: changeElement,
+        inputWidth: inputWidth,
+        changeWidth: changeWidth,
+        ol: ol
+    };
 }
 function setup(startup, type){
     var line = startup(type);
@@ -449,6 +466,8 @@ function setup(startup, type){
     var container = ref.container;
     var inputElement = ref.inputElement;
     var changeElement = ref.changeElement;
+    var inputWidth = ref.inputWidth;
+    var changeWidth = ref.changeWidth;
     var ol = ref.ol;
 
     var min = -100;
@@ -458,6 +477,10 @@ function setup(startup, type){
         line.element.parentNode.removeChild(line.element);
         console.log('Changed Element ',inputElement.value);
         line = startup(inputElement.value);
+    });
+
+    changeWidth.addEventListener('click', function (v){
+        line.width = inputWidth.value;
     });
 
     ['x1', 'y1', 'x2', 'y2']

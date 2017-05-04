@@ -1,23 +1,41 @@
+
 function createTopElements(){
 
     let container = create('div');
     let p1 = create('p');
     let inputElement = create('input', {placeholder: 'Element Type'});
     let changeElement = create('button');
+    let inputWidth = create('input', {placeholder: 'Element Width'});
+    let changeWidth = create('button');
+    let input1 = create('div');
+    let input2 = create('div');
     let ol = create('ol');
     let p2 = create('p');
 
+    append(input1, inputElement);
+    append(input1, changeElement);
+    append(input2, inputWidth);
+    append(input2, changeWidth);
+
     changeElement.innerHTML = 'Change Element';
+    changeWidth.innerHTML = 'Change Width';
     p1.textContent = 'Try different elements.';
-    p2.textContent = 'Adjust the sliders to change the line.';
-    [p1, inputElement, changeElement, p2, ol]
+    p2.textContent = 'Adjust the sliders to change the line\'s position.';
+    [p1, input1,input2,p2, ol]
     .forEach(e=>append(container, e));
 
     container.style.margin = '0 25% 0 25%';
     container.style.border = '1px solid black';
     container.style.padding = '7px';
 
-    return {container, inputElement, changeElement, ol};
+    return {
+        container,
+        inputElement,
+        changeElement,
+        inputWidth,
+        changeWidth,
+        ol
+    };
 }
 export default function setup(startup, type){
     let line = startup(type);
@@ -25,6 +43,8 @@ export default function setup(startup, type){
         container,
         inputElement,
         changeElement,
+        inputWidth,
+        changeWidth,
         ol
     } = createTopElements();
 
@@ -39,6 +59,10 @@ export default function setup(startup, type){
         line.element.parentNode.removeChild(line.element);
         console.log('Changed Element ',inputElement.value);
         line = startup(inputElement.value);
+    });
+
+    changeWidth.addEventListener('click', v=>{
+        line.width = inputWidth.value;
     });
 
     ['x1', 'y1', 'x2', 'y2']
